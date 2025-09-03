@@ -9,7 +9,7 @@ export interface Recipe {
 }
 
 const generateRecipes = async (pantryItems: string[]): Promise<Recipe[]> => {
-  const response = await fetch('http://localhost:5000/api/recipes', {
+  const response = await fetch(`${process.env.VITE_API_URL}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -48,7 +48,6 @@ const PantryRecipePage: React.FC = () => {
       setRecipes(result);
     } catch (error) {
       console.error('Error generating recipes:', error);
-      // Set fallback recipes on error
       setRecipes([{
         title: "שגיאה בהפקת מתכונים",
         ingredients: ["אנא נסה שוב"],
@@ -78,8 +77,7 @@ const PantryRecipePage: React.FC = () => {
           loading={loading}
         />
         
-      <RecipeSuggestions pantryItems={pantryItems} />
-
+        <RecipeSuggestions pantryItems={pantryItems} />
       </div>
     </div>
   );
