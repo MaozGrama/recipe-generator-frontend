@@ -45,7 +45,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     console.log("Attempting login with:", { email, password });
     try {
-      const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
+      const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password }, {
+        withCredentials: true, // Ensure credentials are sent if needed
+      });
       const { token } = response.data;
       console.log("Login response token:", token);
       setToken(token);
@@ -56,7 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCurrentUser({ email, username });
       console.log("Login completed, currentUser:", { email, username });
     } catch (err: any) {
-      console.error("Login error:", err);
+      console.error("Login error:", err.response?.data || err.message);
       throw err;
     } finally {
       setLoading(false);
@@ -67,7 +69,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     console.log("Attempting signup with:", { email, password, username });
     try {
-      const response = await axios.post(`${apiUrl}/api/auth/signup`, { email, password, username });
+      const response = await axios.post(`${apiUrl}/api/auth/signup`, { email, password, username }, {
+        withCredentials: true,
+      });
       const { token } = response.data;
       console.log("Signup response token:", token);
       setToken(token);
@@ -77,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCurrentUser({ email, username });
       console.log("Signup completed, currentUser:", { email, username });
     } catch (err: any) {
-      console.error("Signup error:", err);
+      console.error("Signup error:", err.response?.data || err.message);
       throw err;
     } finally {
       setLoading(false);
